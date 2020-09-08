@@ -5,5 +5,4 @@ import (
 )
 
 func main() {
-	logrus.Info("I can add dependencies")
 }

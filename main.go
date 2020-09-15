@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kelseyhightower/envconfig" // не убирать и не комментировать, починить ошибку, добавив алиас
+	// не убирать и не комментировать, починить ошибку, добавив алиас
+	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"
 )
 

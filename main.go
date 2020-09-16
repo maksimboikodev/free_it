@@ -30,9 +30,9 @@ func main() {
 	fmt.Println(d)
 
 	c := Celsius(d)
-	/*e := Fahrenheit(d)*/
+
 	log.Info("температура по фаренгейту  ", toFahrenheit(c))
-	/*log.Info("температура по цельсию  ", toCelsius(e))*/
+
 }
 
 func toFahrenheit(t Celsius) Fahrenheit {
@@ -43,12 +43,3 @@ func toFahrenheit(t Celsius) Fahrenheit {
 	return temp
 
 }
-
-/*func toCelsius(t Fahrenheit) Celsius {
-	var temp Celsius
-
-	temp = Celsius((t - 32) * 5 / 9)
-
-	return temp
-
-}*/

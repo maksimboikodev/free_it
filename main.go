@@ -33,4 +33,5 @@ func toFahrenheit(t Celsius) Fahrenheit {
 	var temp Fahrenheit
 	temp = Fahrenheit((t * 9 / 5) + 32)
 	return temp
+
 }

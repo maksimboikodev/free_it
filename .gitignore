@@ -1,1 +1,4 @@
+# Ignore logs
 *.log
+# Бинарник
+main

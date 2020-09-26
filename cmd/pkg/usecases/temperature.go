@@ -9,7 +9,7 @@ type HistoryHander struct {
 	Logger  *logrus.Logger
 }
 
-func CheckandSave(h *HistoryHander, t Celsius, n int) {
+func CheckAndSave(h *HistoryHander, t Celsius, n int) {
 	for i := 0; i < n; i++ {
 		f := toFahrenheit(t) + Fahrenheit(i)
 		h.Samples = append(h.Samples, f)

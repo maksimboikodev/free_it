@@ -33,5 +33,5 @@ func main() {
 		Samples: []usecases.Fahrenheit{},
 	}
 
-	usecases.CheckandSave(tempHistoryHandler, usecases.Celsius(d), 5)
+	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(d), 5)
 }

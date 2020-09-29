@@ -11,12 +11,13 @@ func OcheredFIFO() {
 
 	for len(queue) > 0 {
 		//fmt.Print(queue[0]) // Первый элемент
-		queue = queue[1:] // Удаление из очереди
+		//queue = queue[1:] // Удаление из очереди
+
+		queue[0] = ""
+		queue = queue[1:]
 		fmt.Print(queue)
-		//queue[0] = ""
-		//queue = queue[1:]
 	}
 
-	fmt.Print(queue)
+	//fmt.Print(queue)
 
 }

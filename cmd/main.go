@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/maksimboikodev/test/pkg/usecases"
-
 	"github.com/kelseyhightower/envconfig"
+	"github.com/maksimboikodev/test/pkg/datatypes"
+	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
 
@@ -33,5 +33,7 @@ func main() {
 		Samples: []usecases.Fahrenheit{},
 	}
 
-	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(d), 5)
+	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(d), 1)
+
+	datatypes.OcheredFIFO()
 }

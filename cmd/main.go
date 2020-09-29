@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/maksimboikodev/test/cmd/pkg/usecases"
+	"github.com/maksimboikodev/test/pkg/usecases"
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/sirupsen/logrus"

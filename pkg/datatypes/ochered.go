@@ -6,12 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-type HistoryHander struct {
-	Samples []string
-	Logger  *logrus.Logger
-}
-
-func OcheredFIFO(h *HistoryHander) {
+func OcheredFIFO(h *LoggerDz) {
 	var queue []string
 	queue = append(queue, "Hello ")
 	queue = append(queue, "world!")
@@ -21,10 +16,12 @@ func OcheredFIFO(h *HistoryHander) {
 		queue[0] = ""
 		queue = queue[1:]
 		fmt.Println(queue)
-
-		//h.Samples = append(h.Samples, queue)
-		h.Logger.Info("очередь FIFO ", h.Samples, queue)
+		
+		s:=(h.Samples,queue)
+		h.Samples=s
+		h.Logger.Info("add to log",h.Samples)
 	}
+
 }
 
 type ListNode struct {
@@ -55,4 +52,9 @@ func Reverse(s string) string {
 
 	}
 	return string(runes)
+}
+
+type LoggerDz struct {
+	Samples string
+	Logger  *logrus.Logger
 }

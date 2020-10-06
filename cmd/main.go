@@ -35,7 +35,12 @@ func main() {
 
 	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius( /*d*/ 10), 2)
 
-	//datatypes.OcheredFIFO(tempHistoryHandler)
+	OcheredHandler := &datatypes.LoggerDz{
+		Samples: datatypes.OcheredFIFO
+		Logger: log
+	}
+
+	datatypes.OcheredFIFO()
 	datatypes.OdnSpis()
 
 	str := "Golang"

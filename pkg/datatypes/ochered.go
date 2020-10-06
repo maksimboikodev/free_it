@@ -22,7 +22,7 @@ func OcheredFIFO(h *HistoryHander) {
 		queue = queue[1:]
 		fmt.Println(queue)
 
-		h.Samples = append(h.Samples, queue)
+		//h.Samples = append(h.Samples, queue)
 		h.Logger.Info("очередь FIFO ", h.Samples, queue)
 	}
 }
@@ -47,10 +47,12 @@ func OdnSpis() {
 	}
 
 }
-func Reverse(str string) (result string) {
 
-	for _, v := range str {
-		result = string(v) + result
+func Reverse(s string) string {
+	runes := []rune(s)
+	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
+		runes[i], runes[j] = runes[j], runes[i]
+
 	}
-	return
+	return string(runes)
 }

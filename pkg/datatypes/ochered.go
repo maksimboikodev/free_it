@@ -25,7 +25,7 @@ func OcheredFIFO(h *usecases.HistoryHander) {
 	}
 }
 
-func OdnSpis() {
+func OdnSpis(h *usecases.HistoryHander) {
 	n1 := &ListNode{Val: 1}
 	n2 := &ListNode{Val: 2}
 	n1.Next = n2
@@ -37,14 +37,16 @@ func OdnSpis() {
 	i := n1
 	for i != nil {
 		fmt.Println(i.Val)
+		h.Logger.Info(i.Val)
 		i = i.Next
 	}
 }
 
-func Reverse(s string) string {
+func Reverse(s string, h *usecases.HistoryHander) string {
 	runes := []rune(s)
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
+	h.Logger.Info(string(runes))
 	return string(runes)
 }

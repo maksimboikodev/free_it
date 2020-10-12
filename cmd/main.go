@@ -42,7 +42,7 @@ func main() {
 
 	//datatypes.OcheredFIFO()
 	datatypes.OdnSpis()
-	datatypes.OcheredFIFO(tempHistoryHandler)
+	datatypes.OcheredFIFO(tempHistoryHandler /*h * usecases.HistoryHander*/)
 	str := "Golang"
 	fmt.Println("", datatypes.Reverse(str))
 }

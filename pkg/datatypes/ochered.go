@@ -2,6 +2,8 @@ package datatypes
 
 import (
 	"fmt"
+
+	"github.com/maksimboikodev/test/pkg/usecases"
 )
 
 type ListNode struct {
@@ -9,7 +11,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
-func OcheredFIFO() {
+func OcheredFIFO(h *usecases.HistoryHander) {
 	var queue []string
 
 	queue = append(queue, "Hello ")
@@ -17,7 +19,7 @@ func OcheredFIFO() {
 	fmt.Print(queue)
 
 	for len(queue) > 0 {
-		//h.Logger.Info(queue)
+		h.Logger.Info(queue)
 		queue = queue[1:]
 		fmt.Println(queue)
 	}

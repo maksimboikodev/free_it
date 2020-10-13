@@ -38,5 +38,6 @@ func main() {
 	datatypes.List(tempHistoryHandler)
 	datatypes.TurnFIFO(tempHistoryHandler)
 	str := "Golang"
-	fmt.Println("", datatypes.Reverse(str, tempHistoryHandler))
+	datatypes.Reverse(str, tempHistoryHandler)
+	datatypes.ReverseString(str, tempHistoryHandler)
 }

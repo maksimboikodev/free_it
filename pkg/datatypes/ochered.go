@@ -1,8 +1,6 @@
 package datatypes
 
 import (
-	"fmt"
-
 	"github.com/maksimboikodev/test/pkg/usecases"
 )
 
@@ -15,12 +13,10 @@ func TurnFIFO(h *usecases.HistoryHander) {
 	var queue []string
 	queue = append(queue, "Hello ")
 	queue = append(queue, "world!")
-	fmt.Print(queue)
 
 	for len(queue) > 0 {
 		h.Info(queue)
 		queue = queue[1:]
-		fmt.Println(queue)
 	}
 }
 
@@ -31,14 +27,10 @@ func List(h *usecases.HistoryHander) {
 	n3 := &ListNode{Val: 3}
 	n2.Next = n3
 
-	fmt.Println(n1.Val, n2.Val, n3.Val)
-
 	i := n1
 	for i != nil {
-		fmt.Println(i.Val)
 		h.Info(i.Val)
 		i = i.Next
-
 	}
 }
 
@@ -49,4 +41,12 @@ func Reverse(s string, h *usecases.HistoryHander) string {
 	}
 	h.Info(string(runes))
 	return string(runes)
+}
+func ReverseString(s string, h *usecases.HistoryHander) string {
+	var newWord []rune
+	for _, v := range s {
+		newWord = append([]rune{v}, newWord...)
+	}
+	h.Info(string(newWord))
+	return string(newWord)
 }

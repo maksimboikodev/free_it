@@ -4,9 +4,11 @@ import "github.com/sirupsen/logrus"
 
 type Celsius float32
 type Fahrenheit float32
+
 type HistoryHander struct {
 	Samples []Fahrenheit
-	Logger  *logrus.Logger
+	//Logger  *logrus.Logger
+	logrus.Logger
 }
 
 func CheckAndSave(h *HistoryHander, t Celsius, n int) {

@@ -11,6 +11,10 @@ type ListNode struct {
 	Next *ListNode
 }
 
+/*type Handler struct {
+	logrus.Logger
+}*/
+
 func OcheredFIFO(h *usecases.HistoryHander) {
 	var queue []string
 
@@ -37,8 +41,10 @@ func OdnSpis(h *usecases.HistoryHander) {
 	i := n1
 	for i != nil {
 		fmt.Println(i.Val)
-		h.Logger.Info(i.Val)
+		//h.Logger.Info(i.Val)
+		h.Info(i.Val)
 		i = i.Next
+
 	}
 }
 

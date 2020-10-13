@@ -7,15 +7,14 @@ type Fahrenheit float32
 
 type HistoryHander struct {
 	Samples []Fahrenheit
-	//Logger  *logrus.Logger
-	logrus.Logger
+	*logrus.Logger
 }
 
 func CheckAndSave(h *HistoryHander, t Celsius, n int) {
 	for i := 0; i < n; i++ {
 		f := toFahrenheit(t) + Fahrenheit(i)
 		h.Samples = append(h.Samples, f)
-		h.Logger.Info("предыдущие изменения и текущая температура - ", h.Samples, f)
+		h.Info("предыдущие изменения и текущая температура - ", h.Samples, f)
 	}
 }
 func toFahrenheit(t Celsius) Fahrenheit {

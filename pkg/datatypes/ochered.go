@@ -11,25 +11,20 @@ type ListNode struct {
 	Next *ListNode
 }
 
-/*type Handler struct {
-	logrus.Logger
-}*/
-
-func OcheredFIFO(h *usecases.HistoryHander) {
+func TurnFIFO(h *usecases.HistoryHander) {
 	var queue []string
-
 	queue = append(queue, "Hello ")
 	queue = append(queue, "world!")
 	fmt.Print(queue)
 
 	for len(queue) > 0 {
-		h.Logger.Info(queue)
+		h.Info(queue)
 		queue = queue[1:]
 		fmt.Println(queue)
 	}
 }
 
-func OdnSpis(h *usecases.HistoryHander) {
+func List(h *usecases.HistoryHander) {
 	n1 := &ListNode{Val: 1}
 	n2 := &ListNode{Val: 2}
 	n1.Next = n2
@@ -41,7 +36,6 @@ func OdnSpis(h *usecases.HistoryHander) {
 	i := n1
 	for i != nil {
 		fmt.Println(i.Val)
-		//h.Logger.Info(i.Val)
 		h.Info(i.Val)
 		i = i.Next
 
@@ -53,6 +47,6 @@ func Reverse(s string, h *usecases.HistoryHander) string {
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
-	h.Logger.Info(string(runes))
+	h.Info(string(runes))
 	return string(runes)
 }

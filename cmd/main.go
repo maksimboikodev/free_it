@@ -23,21 +23,20 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	/*var d float32
+	var d float32
 	fmt.Print("Введите температуру: ")
 	fmt.Scan(&d)
-	fmt.Println(d)*/
+	fmt.Println(d)
 
 	tempHistoryHandler := &usecases.HistoryHander{
-		//Logger:    log,
+		Logger:  log,
 		Samples: []usecases.Fahrenheit{},
 	}
-	//j := &datatypes.Handler{}
 
-	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius( /*d*/ 50), 2)
+	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(d), 2)
 
-	datatypes.OdnSpis(tempHistoryHandler)
-	datatypes.OcheredFIFO(tempHistoryHandler)
-	str := "Golang ggggggg"
+	datatypes.List(tempHistoryHandler)
+	datatypes.TurnFIFO(tempHistoryHandler)
+	str := "Golang"
 	fmt.Println("", datatypes.Reverse(str, tempHistoryHandler))
 }

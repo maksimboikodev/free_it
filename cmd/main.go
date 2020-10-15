@@ -40,4 +40,5 @@ func main() {
 	str := "Golang"
 	datatypes.Reverse(str, tempHistoryHandler)
 	datatypes.ReverseString(str, tempHistoryHandler)
+	urlshortener.absf()
 }

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/maksimboikodev/test/pkg/urlshortener"
+
 	"github.com/kelseyhightower/envconfig"
 	"github.com/maksimboikodev/test/pkg/datatypes"
 	"github.com/maksimboikodev/test/pkg/usecases"
@@ -40,5 +42,5 @@ func main() {
 	str := "Golang"
 	datatypes.Reverse(str, tempHistoryHandler)
 	datatypes.ReverseString(str, tempHistoryHandler)
-	urlshortener.absf()
+	urlshortener.NewURLStore()
 }

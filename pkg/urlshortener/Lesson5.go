@@ -76,13 +76,11 @@ func NewURLStore() *URLStore {
 	return key
 }*/
 func (s *URLStore) Get(key string) string {
-
+	var val string
 	_, ok := s.Urls["TUT"]
 	if ok {
-		val := s.Urls["TUT"]
-		return val
-	} else {
-		return "False"
-	}
+		val = s.Urls["TUT"]
 
+	}
+	return val
 }

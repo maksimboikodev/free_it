@@ -1,13 +1,17 @@
 package urlshortener
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type URLStore struct {
 	Urls map[string]string
 }
 
 func NewURLStore() *URLStore {
-	return &URLStore{}
+	return &URLStore{
+		Urls: make(map[string]string)}
 }
 
 func (s *URLStore) Get(key string) string {
@@ -18,32 +22,40 @@ func (s *URLStore) Get(key string) string {
 	return ""
 }
 
-/*func NewURLStore() *URLStore {
-	var urls *URLStore
-	urls = &URLStore{}
-	fmt.Println(urls)
-	return urls
+func (s *URLStore) Set(key, url string) bool {
+	bl := false
+	for _, value := range s.Urls {
+		if value == url {
+			bl = true
+		}
+	}
+	if !bl {
+		s.Urls[key] = url
+		return true
+	}
+	return false
+
+}
+func (s *URLStore) Put(url string) string {
+	k := genKey(len(s.Urls))
+	g := s.Set(k, url)
+	if g == true {
+		s.Urls[k] = url
+	}
+	fmt.Print(g)
+	fmt.Print(s.Urls)
+	return ""
 }
 
-
-func (s *URLStore) Get(key string) string {
-	var val string
-	_, ok := s.Urls["TUT"]
-	if ok {
-		val = s.Urls["TUT"]
-
+func (s *URLStore) Count() int {
+	return len(s.Urls)
+}
+func genKey(n int) string {
+	if n < 10 {
+		shortUrl := strconv.Itoa(n) + "_URL"
+		return shortUrl
 	}
-	return val
-}*/
-func (s *URLStore) Set(key, url string) bool {
-	_, ok := s.Urls[key]
-	if ok {
-		fmt.Println("Значение существует")
-		return false
-	} else {
-		s.Urls[key] = url
-		fmt.Println("Значение добавлено")
-		return true
+	shortUrl := strconv.Itoa(n) + "_urllll"
+	return shortUrl
 
-	}
 }

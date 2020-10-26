@@ -42,5 +42,14 @@ func main() {
 	str := "Golang"
 	datatypes.Reverse(str, tempHistoryHandler)
 	datatypes.ReverseString(str, tempHistoryHandler)
-	urlshortener.NewURLStore()
+	baseurl := urlshortener.NewURLStore()
+	fmt.Println("Url: ", baseurl.Get("go"))
+	fmt.Println(baseurl.Put("abrakadabra.com"))
+	fmt.Println(baseurl.Put("google.com"))
+	fmt.Println(baseurl.Put("dabra.com"))
+	fmt.Println(baseurl.Put("abrakadabra.com"))
+	fmt.Println(baseurl.Put("kadabra.com"))
+	fmt.Println(baseurl.Put("kadabra.com"))
+	fmt.Println(baseurl.Put("kadabra.com"))
+	fmt.Println(baseurl.Count())
 }

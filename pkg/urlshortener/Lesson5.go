@@ -14,18 +14,18 @@ func NewURLStore() *URLStore {
 }
 
 func (s *URLStore) Get(key string) string {
-	if _, ok := s.Urls[key]; !ok {
-		return "URL not found"
+	if url, ok := s.Urls[key]; ok {
+		return url
 	}
-	return s.Urls[key]
+	return "URL not found"
 }
 
 func (s *URLStore) Set(key, url string) bool {
-	if _, ok := s.Urls[key]; ok {
-		return false
+	_, ok := s.Urls[key]
+	if !ok {
+		s.Urls[key] = url
 	}
-	s.Urls[key] = url
-	return true
+	return !ok
 }
 
 func (s *URLStore) Put(url string) string {
@@ -40,5 +40,4 @@ func (s *URLStore) Count() int {
 
 func genKey(n int) string {
 	return strconv.Itoa(n) + "_URL"
-
 }

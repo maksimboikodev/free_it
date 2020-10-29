@@ -10,14 +10,15 @@ type URLStore struct {
 
 func NewURLStore() *URLStore {
 	return &URLStore{
-		Urls: make(map[string]string)}
+		Urls: make(map[string]string),
+	}
 }
 
 func (s *URLStore) Get(key string) string {
 	if url, ok := s.Urls[key]; ok {
 		return url
 	}
-	return "URL not found"
+	return ""
 }
 
 func (s *URLStore) Set(key, url string) bool {

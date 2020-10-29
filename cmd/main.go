@@ -42,10 +42,10 @@ func main() {
 	str := "Golang"
 	datatypes.Reverse(str, tempHistoryHandler)
 	datatypes.ReverseString(str, tempHistoryHandler)
-	Storage := urlshortener.NewURLStore()
-	tempHistoryHandler.Info("Key New:  ", Storage.Set("3_Url", "abrakada.com"))
-	tempHistoryHandler.Info("Key New:  ", Storage.Set("5_Url", "ab.com"))
-	tempHistoryHandler.Info("ALL MAP:  ", Storage)
-	tempHistoryHandler.Info("Url: ", Storage.Get("12_URL"))
-	tempHistoryHandler.Info("Url: ", Storage.Get("5_Url"))
+	storage := urlshortener.NewURLStore()
+	tempHistoryHandler.Info("Key New:  ", storage.Set("3_Url", "abrakada.com"))
+	tempHistoryHandler.Info("Key New:  ", storage.Set("5_Url", "ab.com"))
+	tempHistoryHandler.Info("ALL MAP:  ", storage)
+	tempHistoryHandler.Info("Url: ", storage.Get("12_URL"))
+	tempHistoryHandler.Info("Url: ", storage.Get("5_Url"))
 }

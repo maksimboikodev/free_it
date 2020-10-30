@@ -47,7 +47,7 @@ func genKey(n int) string {
 }
 
 func (e ErrNegativeSqrt) Error() string {
-	return fmt.Sprint("нельзя извлечь квадратный корень из отрицательного числа ", float64(e))
+	return fmt.Sprint("cannot square root a negative number ", float64(e))
 }
 
 func Sqrt(value float64) (float64, error) {

@@ -26,7 +26,7 @@ func main() {
 	log.Out = file
 
 	var d float32
-	fmt.Print("Введите температуру: ")
+	fmt.Print("enter temperature: ")
 	fmt.Scan(&d)
 	fmt.Println(d)
 
@@ -48,6 +48,4 @@ func main() {
 	tempHistoryHandler.Info("ALL MAP:  ", storage)
 	tempHistoryHandler.Info("Url: ", storage.Get("12_URL"))
 	tempHistoryHandler.Info("Url: ", storage.Get("5_Url"))
-	tempHistoryHandler.Info(urlshortener.Sqrt(9))
-	tempHistoryHandler.Info(urlshortener.Sqrt(-9))
 }

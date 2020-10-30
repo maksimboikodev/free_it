@@ -1,12 +1,15 @@
 package urlshortener
 
 import (
+	"fmt"
+	"math"
 	"strconv"
 )
 
 type URLStore struct {
 	Urls map[string]string
 }
+type ErrNegativeSqrt float64
 
 func NewURLStore() *URLStore {
 	return &URLStore{
@@ -41,4 +44,15 @@ func (s *URLStore) Count() int {
 
 func genKey(n int) string {
 	return strconv.Itoa(n) + "_URL"
+}
+
+func (e ErrNegativeSqrt) Error() string {
+	return fmt.Sprint("нельзя извлечь квадратный корень из отрицательного числа ", float64(e))
+}
+
+func Sqrt(value float64) (float64, error) {
+	if value < 0 {
+		return 0, ErrNegativeSqrt(value)
+	}
+	return math.Sqrt(value), nil
 }

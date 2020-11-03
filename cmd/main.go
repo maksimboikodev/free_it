@@ -52,12 +52,4 @@ func main() {
 	if _, error := urlshortener.Sqrt(d); error != nil {
 		tempHistoryHandler.Info("err: ", error)
 	}
-
-	fmt.Println("started ")
-	c := make(chan string)
-	go urlshortener.Read(c)
-	a := "AAAA"
-	tempHistoryHandler.Info("Значение на входе в канал", a)
-	c <- a
-	fmt.Println("stopped")
 }

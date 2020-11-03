@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"strconv"
-	"time"
 )
 
 type URLStore struct {
@@ -56,9 +55,4 @@ func Sqrt(value float64) (float64, error) {
 		return 0, ErrNegativeSqrt(value)
 	}
 	return math.Sqrt(value), nil
-}
-
-func Read(c chan string) {
-	time.Sleep(2 * time.Second)
-	fmt.Println("Значение на выходе из канала ", <-c)
 }

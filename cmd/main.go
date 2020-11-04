@@ -59,6 +59,7 @@ func main() {
 
 	fmt.Println("started ")
 	c := make(chan string)
+	//go goroutine.read()
 	go chanell.read(c)
 
 	a := "AAAA"

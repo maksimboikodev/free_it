@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/maksimboikodev/test/pkg/usecases"
@@ -14,12 +13,12 @@ type EnvConfig struct {
 	LogFile string `envconfig:"LOG_FILE"`
 }
 
-func read(c chan string) {
+/*func read(c chan string) {
 	time.Sleep(2 * time.Second)
 	b := <-c
 	fmt.Println("The value at the exit from the channel ", b)
 	//usecases.HistoryHander.Info(b)
-}
+}*/
 
 func main() {
 	var eConf EnvConfig
@@ -60,7 +59,8 @@ func main() {
 
 	fmt.Println("started ")
 	c := make(chan string)
-	go read(c)
+	go chanell.read(c)
+
 	a := "AAAA"
 	c <- a
 	tempHistoryHandler.Info("The value at the entrance to the channel  ", a)

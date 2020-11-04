@@ -1,4 +1,4 @@
-package chanel
+package chanell
 
 import (
 	"fmt"

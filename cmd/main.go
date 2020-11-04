@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
+	"github.com/maksimboikodev/test/pkg/chanell"
 	"github.com/maksimboikodev/test/pkg/urlshortener"
 	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
@@ -53,8 +54,8 @@ func main() {
 
 	fmt.Println("started ")
 	c := make(chan string)
-	go chanell.read(c)
-	a := "AAAA"
+	go chanell.Read(c)
+	a := "BBBB"
 	c <- a
 	tempHistoryHandler.Info("The value at the entrance to the channel  ", a)
 	fmt.Println("stopped")

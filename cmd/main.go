@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
+	"github.com/maksimboikodev/test/pkg/urlshortener"
 	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
@@ -12,13 +13,6 @@ import (
 type EnvConfig struct {
 	LogFile string `envconfig:"LOG_FILE"`
 }
-
-/*func read(c chan string) {
-	time.Sleep(2 * time.Second)
-	b := <-c
-	fmt.Println("The value at the exit from the channel ", b)
-	//usecases.HistoryHander.Info(b)
-}*/
 
 func main() {
 	var eConf EnvConfig
@@ -53,15 +47,13 @@ func main() {
 	//tempHistoryHandler.Info("Url: ", storage.Get("12_URL"))
 	//tempHistoryHandler.Info("Url: ", storage.Get("5_Url"))
 
-	/*if _, error := urlshortener.Sqrt(d); error != nil {
+	if _, error := urlshortener.Sqrt(d); error != nil {
 		tempHistoryHandler.Info("err: ", error)
-	}*/
+	}
 
 	fmt.Println("started ")
 	c := make(chan string)
-	//go goroutine.read()
 	go chanell.read(c)
-
 	a := "AAAA"
 	c <- a
 	tempHistoryHandler.Info("The value at the entrance to the channel  ", a)

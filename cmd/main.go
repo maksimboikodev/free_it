@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/maksimboikodev/test/pkg/chanell"
-	"github.com/maksimboikodev/test/pkg/urlshortener"
 	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
@@ -24,10 +22,10 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	var d float64
+	/*var d float64
 	fmt.Print("enter temperature: ")
 	fmt.Scan(&d)
-	fmt.Println(d)
+	fmt.Println(d)*/
 
 	tempHistoryHandler := &usecases.HistoryHander{
 		Logger:  log,
@@ -48,15 +46,15 @@ func main() {
 	//tempHistoryHandler.Info("Url: ", storage.Get("12_URL"))
 	//tempHistoryHandler.Info("Url: ", storage.Get("5_Url"))
 
-	if _, error := urlshortener.Sqrt(d); error != nil {
+	/*if _, error := urlshortener.Sqrt(d); error != nil {
 		tempHistoryHandler.Info("err: ", error)
-	}
+	}*/
 
-	fmt.Println("started ")
-	c := make(chan string)
-	go chanell.Read(c)
-	a := "BBBB"
-	c <- a
-	tempHistoryHandler.Info("The value at the entrance to the channel  ", a)
-	fmt.Println("stopped")
+	ch := make(chan string)
+	go chanell.Read(ch)
+	inchen := "ABCDEF"
+	ch <- inchen
+	tempHistoryHandler.Info("The value at the entrance to the channel  ", inchen)
+	tempHistoryHandler.Info("The value at the entrance to the channel 2 ", ch)
+	tempHistoryHandler.Info("The value at the exit from the channel    ", chanell.Read)
 }

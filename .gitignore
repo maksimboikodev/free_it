@@ -2,3 +2,5 @@
 *.log
 # Бинарник
 main
+#HZ
+.vscode

@@ -6,9 +6,6 @@ import (
 
 	"github.com/kelseyhightower/envconfig"
 	"github.com/maksimboikodev/test/pkg/chanell"
-	"github.com/maksimboikodev/test/pkg/datatypes"
-	"github.com/maksimboikodev/test/pkg/urlshortener"
-	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,17 +22,17 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	var d float64
+	/*var d float64
 	fmt.Print("enter temperature: ")
 	fmt.Scan(&d)
-	fmt.Println(d)
+	fmt.Println(d)*/
 
-	tempHistoryHandler := &usecases.HistoryHander{
+	/*tempHistoryHandler := &usecases.HistoryHander{
 		Logger:  log,
 		Samples: []usecases.Fahrenheit{},
-	}
+	}*/
 
-	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(d), 2)
+	/*usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(d), 2)
 
 	datatypes.List(tempHistoryHandler)
 	datatypes.TurnFIFO(tempHistoryHandler)
@@ -51,12 +48,16 @@ func main() {
 
 	if _, error := urlshortener.Sqrt(d); error != nil {
 		tempHistoryHandler.Info("err: ", error)
-	}
+	}*/
 
 	ch := make(chan string)
-	go chanell.Read(ch)
 	inchen := "ABCDEF"
-	ch <- inchen
-	tempHistoryHandler.Info("The value at the entrance to the channel  ", inchen)
-	tempHistoryHandler.Info("The value at the exit from the channel    ", chanell.Read)
+	go chanell.Read(ch, inchen)
+	fmt.Println("снаружи", inchen)
+	x := <-ch
+	fmt.Println("из канала", x)
+
+	//tempHistoryHandler.Info("The value at the entrance to the channel  ", inchen)
+	//tempHistoryHandler.Info("The value at the exit from the channel    ", )
+
 }

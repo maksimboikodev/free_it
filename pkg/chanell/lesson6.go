@@ -1,10 +1,12 @@
 package chanell
 
 import (
+	"fmt"
 	"time"
 )
 
-func Read(ch chan string) {
+func Read(ch chan string, inchen string) {
 	time.Sleep(2 * time.Second)
-	<-ch
+	fmt.Println("внутри", inchen)
+	ch <- inchen
 }

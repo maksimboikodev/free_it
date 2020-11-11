@@ -1,12 +1,13 @@
 package chanell
 
 import (
-	"fmt"
 	"time"
+
+	"github.com/maksimboikodev/test/pkg/usecases"
 )
 
-func Read(ch chan string, inchen string) {
+func Write(ch chan string, inmess string, h *usecases.HistoryHander) {
+	h.Info("push chanell -", inmess)
 	time.Sleep(2 * time.Second)
-	fmt.Println("внутри", inchen)
-	ch <- inchen
+	ch <- inmess
 }

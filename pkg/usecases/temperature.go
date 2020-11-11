@@ -14,7 +14,7 @@ func CheckAndSave(h *HistoryHander, t Celsius, n int) {
 	for i := 0; i < n; i++ {
 		f := toFahrenheit(t) + Fahrenheit(i)
 		h.Samples = append(h.Samples, f)
-		h.Info("предыдущие изменения и текущая температура - ", h.Samples, f)
+		h.Info("previous changes and current temperature - ", h.Samples, f)
 	}
 }
 func toFahrenheit(t Celsius) Fahrenheit {

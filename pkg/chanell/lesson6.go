@@ -6,8 +6,7 @@ import (
 	"github.com/maksimboikodev/test/pkg/usecases"
 )
 
-func Write(ch chan string, inmess string, h *usecases.HistoryHander) {
-	h.Info("push chanell -", inmess)
-	time.Sleep(2 * time.Second)
-	ch <- inmess
+func DoSomething(ch chan string, h *usecases.HistoryHander) {
+	time.Sleep(3 * time.Second)
+	h.Info("pull chanell ", <-ch)
 }

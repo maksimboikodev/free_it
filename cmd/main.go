@@ -56,6 +56,7 @@ func main() {
 	mess := "message"
 	tempHistoryHandler.Info("started ", mess)
 	ch := make(chan string)
-	go chanell.Write(ch, mess, tempHistoryHandler)
-	tempHistoryHandler.Info("pull chanell ", <-ch)
+	go chanell.DoSomething(ch, tempHistoryHandler)
+	ch <- mess
+	tempHistoryHandler.Info("push chanell  ", mess)
 }

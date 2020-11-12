@@ -1,14 +1,11 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
+	"github.com/maksimboikodev/test/pkg/csvwork"
+
 	"github.com/kelseyhightower/envconfig"
-	"github.com/maksimboikodev/test/pkg/chanell"
-	"github.com/maksimboikodev/test/pkg/datatypes"
-	"github.com/maksimboikodev/test/pkg/urlshortener"
-	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
 
@@ -25,7 +22,7 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	var d float64
+	/*var d float64
 	fmt.Print("enter temperature: ")
 	fmt.Scan(&d)
 	fmt.Println(d)
@@ -58,5 +55,6 @@ func main() {
 	ch := make(chan string)
 	go chanell.DoSomething(ch, tempHistoryHandler)
 	ch <- mess
-	tempHistoryHandler.Info("push chanell  ", mess)
+	tempHistoryHandler.Info("push chanell  ", mess)*/
+	csvwork.Createcsv()
 }

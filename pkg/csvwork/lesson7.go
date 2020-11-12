@@ -1,10 +1,16 @@
 package csvwork
 
 import (
+	"bufio"
 	"encoding/csv"
+	"fmt"
 	"log"
 	"os"
 )
+
+type book struct {
+	Title string
+}
 
 func Createcsv() {
 	rows := [][]string{
@@ -24,4 +30,19 @@ func Createcsv() {
 	}
 	csvwriter.Flush()
 	csvfile.Close()
+}
+
+func Readcsv() {
+	file, err := os.Open("products.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		var b = book{scanner.Text()}
+		//fmt.Println(scanner.Text())
+		fmt.Println(b)
+	}
 }

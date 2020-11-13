@@ -9,7 +9,7 @@ import (
 )
 
 type book struct {
-	Title string
+	title []string
 }
 
 func Createcsv() {
@@ -40,9 +40,10 @@ func Readcsv() {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	var b []string
 	for scanner.Scan() {
-		var b = book{scanner.Text()}
-		//fmt.Println(scanner.Text())
-		fmt.Println(b)
+		b = append(b, scanner.Text())
+		var c = book{b}
+		fmt.Println(c)
 	}
 }

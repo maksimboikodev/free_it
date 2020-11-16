@@ -56,6 +56,5 @@ func main() {
 	go chanell.DoSomething(ch, tempHistoryHandler)
 	ch <- mess
 	tempHistoryHandler.Info("push chanell  ", mess)*/
-	csvwork.Createcsv()
 	csvwork.Readcsv()
 }

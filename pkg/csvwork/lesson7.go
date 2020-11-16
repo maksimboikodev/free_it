@@ -6,15 +6,17 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 type book struct {
-	title []string
+	title    string
+	price    string
+	quantity string
 }
 
 func Createcsv() {
 	rows := [][]string{
-		{"Title", "Price", "Quantity"},
 		{"The ABC of Go", "255", "1500"},
 		{"Functional Programming with Go", "56", "280"},
 		{"Go for It", "459", "356"},
@@ -27,6 +29,7 @@ func Createcsv() {
 	csvwriter := csv.NewWriter(csvfile)
 	for _, row := range rows {
 		_ = csvwriter.Write(row)
+		fmt.Println(row)
 	}
 	csvwriter.Flush()
 	csvfile.Close()
@@ -35,15 +38,16 @@ func Createcsv() {
 func Readcsv() {
 	file, err := os.Open("products.csv")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("file not found")
+		Createcsv()
 	}
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-	var b []string
+	var sr []book
 	for scanner.Scan() {
-		b = append(b, scanner.Text())
-		var c = book{b}
-		fmt.Println(c)
+		b := strings.Split(scanner.Text(), ",")
+		sr = append(sr, book{title: b[0], price: b[1], quantity: b[2]})
 	}
+	fmt.Println(sr)
 }

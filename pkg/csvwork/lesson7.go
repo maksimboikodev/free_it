@@ -22,6 +22,7 @@ func Createcsv() {
 		{"Go for It", "459", "356"},
 		{"The Go Way", "55", "500"},
 	}
+
 	csvfile, err := os.Create("products.csv")
 	if err != nil {
 		log.Fatalf("failed creating file: %s", err)

@@ -3,9 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/maksimboikodev/test/pkg/csvwork"
-
 	"github.com/kelseyhightower/envconfig"
+	"github.com/maksimboikodev/test/pkg/storage"
 	"github.com/sirupsen/logrus"
 )
 
@@ -56,5 +55,7 @@ func main() {
 	go chanell.DoSomething(ch, tempHistoryHandler)
 	ch <- mess
 	tempHistoryHandler.Info("push chanell  ", mess)*/
-	csvwork.Readcsv()
+	//csvwork.Readcsv()
+	storage.Connect()
+
 }

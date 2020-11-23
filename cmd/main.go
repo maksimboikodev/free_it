@@ -1,10 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
+	"github.com/maksimboikodev/test/pkg/chanell"
+	"github.com/maksimboikodev/test/pkg/csvwork"
+	"github.com/maksimboikodev/test/pkg/datatypes"
 	"github.com/maksimboikodev/test/pkg/storage"
+	"github.com/maksimboikodev/test/pkg/urlshortener"
+	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
 
@@ -21,7 +27,7 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	/*var d float64
+	var d float64
 	fmt.Print("enter temperature: ")
 	fmt.Scan(&d)
 	fmt.Println(d)
@@ -38,12 +44,12 @@ func main() {
 	str := "Golang"
 	datatypes.Reverse(str, tempHistoryHandler)
 	datatypes.ReverseString(str, tempHistoryHandler)
-	storage := urlshortener.NewURLStore()
-	tempHistoryHandler.Info("Key New:  ", storage.Set("3_Url", "abrakada.com"))
-	tempHistoryHandler.Info("Key New:  ", storage.Set("5_Url", "ab.com"))
-	tempHistoryHandler.Info("ALL MAP:  ", storage)
-	tempHistoryHandler.Info("Url: ", storage.Get("12_URL"))
-	tempHistoryHandler.Info("Url: ", storage.Get("5_Url"))
+	storag := urlshortener.NewURLStore()
+	tempHistoryHandler.Info("Key New:  ", storag.Set("3_Url", "abrakada.com"))
+	tempHistoryHandler.Info("Key New:  ", storag.Set("5_Url", "ab.com"))
+	tempHistoryHandler.Info("ALL MAP:  ", storag)
+	tempHistoryHandler.Info("Url: ", storag.Get("12_URL"))
+	tempHistoryHandler.Info("Url: ", storag.Get("5_Url"))
 
 	if _, error := urlshortener.Sqrt(d); error != nil {
 		tempHistoryHandler.Info("err: ", error)
@@ -54,8 +60,9 @@ func main() {
 	ch := make(chan string)
 	go chanell.DoSomething(ch, tempHistoryHandler)
 	ch <- mess
-	tempHistoryHandler.Info("push chanell  ", mess)*/
-	//csvwork.Readcsv()
-	storage.Connect()
+	tempHistoryHandler.Info("push chanell  ", mess)
 
+	csvwork.Readcsv()
+
+	storage.Connect()
 }

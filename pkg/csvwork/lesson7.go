@@ -34,6 +34,7 @@ func Createcsv() {
 	}
 	csvwriter.Flush()
 	csvfile.Close()
+	Readcsv()
 }
 
 func Readcsv() {

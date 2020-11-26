@@ -64,5 +64,8 @@ func main() {
 
 	csvwork.Readcsv()
 
-	storage.Connect()
+	db, _ := storage.ConnectDatabase()
+	h := storage.NewPersonRep(db)
+	h.AddRecord()
+	h.FindAll()
 }

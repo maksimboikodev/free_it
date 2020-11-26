@@ -12,9 +12,16 @@ type Users struct {
 	last_name  string
 	age        int
 }
+type PersonRep struct {
+	database *sql.DB
+}
 
-func Connect() {
-	connStr := "user=maksim password=pass  dbname=freeit sslmode=disable"
+func NewPersonRep(database *sql.DB) *PersonRep {
+	return &PersonRep{database: database}
+}
+
+func ConnectDatabase() (*sql.DB, error) {
+	connStr := "user=postgres password=pass  dbname=free sslmode=disable"
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		panic(err)
@@ -24,9 +31,11 @@ func Connect() {
 		fmt.Println("Error connect")
 	}
 	fmt.Println("Open connections", db.Stats().OpenConnections)
-	defer db.Close()
+	return db, err
+}
 
-	rows, err := db.Query("SELECT * from users")
+func (repository *PersonRep) FindAll() {
+	rows, err := repository.database.Query("SELECT * from users")
 	if err != nil {
 		panic(err)
 	}
@@ -45,8 +54,10 @@ func Connect() {
 	for _, p := range users {
 		fmt.Println(p.first_name, p.last_name, p.age)
 	}
-	_, err = db.Exec("insert into users (first_name, last_name, age) values ('Maksim', 'Maksim')",
-		100)
+}
+
+func (repository *PersonRep) AddRecord() {
+	_, err := repository.database.Exec("insert into users (first_name, last_name, age) values ('M', 'M', $1)", 100)
 	if err != nil {
 		panic(err)
 	}

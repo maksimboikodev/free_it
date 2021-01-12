@@ -59,7 +59,11 @@ func main() {
 	ch <- mess
 	tempHistoryHandler.Info("push chanell  ", mess)
 
-	csvwork.Readcsv()
+	csv, err := csvwork.Readcsv()
+	if err != nil {
+		tempHistoryHandler.Info("err: ", err)
+	}
+	tempHistoryHandler.Info("result func Readcsv  ", csv)
 
 	db, error := storage.ConnectDatabase()
 	if error != nil {

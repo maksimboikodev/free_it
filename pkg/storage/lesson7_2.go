@@ -7,43 +7,43 @@ import (
 	_ "github.com/lib/pq"
 )
 
-type Users struct {
+type User struct {
 	first_name string
 	last_name  string
 	age        int
 }
-type PersonRep struct {
+type PersonRepository struct {
 	database *sql.DB
 }
 
-func NewPersonRep(database *sql.DB) *PersonRep {
-	return &PersonRep{database: database}
+const (
+	host     = "localhost"
+	port     = 5432
+	user     = "postgres"
+	password = "pass"
+	dbname   = "free"
+)
+
+func NewPersonRepository(database *sql.DB) *PersonRepository {
+	return &PersonRepository{database: database}
 }
 
 func ConnectDatabase() (*sql.DB, error) {
-	connStr := "user=postgres password=pass  dbname=free sslmode=disable"
+	connStr := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		panic(err)
-	}
-	err = db.Ping()
-	if err != nil {
-		fmt.Println("Error connect")
-	}
-	fmt.Println("Open connections", db.Stats().OpenConnections)
 	return db, err
 }
 
-func (repository *PersonRep) FindAll() {
+func (repository *PersonRepository) FindAll() ([]User, error) {
 	rows, err := repository.database.Query("SELECT * from users")
 	if err != nil {
 		panic(err)
 	}
 	defer rows.Close()
-	users := []Users{}
-
+	users := []User{}
 	for rows.Next() {
-		p := Users{}
+		p := User{}
 		err := rows.Scan(&p.first_name, &p.last_name, &p.age)
 		if err != nil {
 			fmt.Println(err)
@@ -51,14 +51,14 @@ func (repository *PersonRep) FindAll() {
 		}
 		users = append(users, p)
 	}
-	for _, p := range users {
-		fmt.Println(p.first_name, p.last_name, p.age)
-	}
+	return users, err
 }
 
-func (repository *PersonRep) AddRecord() {
-	_, err := repository.database.Exec("insert into users (first_name, last_name, age) values ('M', 'M', $1)", 100)
+func (repository *PersonRepository) AddRecord() error {
+	p := User{}
+	_, err := repository.database.Exec("INSERT INTO users VALUES($1, $2, $3)", p.first_name, p.last_name, p.age)
 	if err != nil {
 		panic(err)
 	}
+	return err
 }

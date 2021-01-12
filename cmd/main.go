@@ -44,12 +44,9 @@ func main() {
 	str := "Golang"
 	datatypes.Reverse(str, tempHistoryHandler)
 	datatypes.ReverseString(str, tempHistoryHandler)
-	storag := urlshortener.NewURLStore()
-	tempHistoryHandler.Info("Key New:  ", storag.Set("3_Url", "abrakada.com"))
-	tempHistoryHandler.Info("Key New:  ", storag.Set("5_Url", "ab.com"))
-	tempHistoryHandler.Info("ALL MAP:  ", storag)
-	tempHistoryHandler.Info("Url: ", storag.Get("12_URL"))
-	tempHistoryHandler.Info("Url: ", storag.Get("5_Url"))
+	repository := urlshortener.NewURLStore()
+	tempHistoryHandler.Info("Key New:  ", repository.Set("5_Url", "ab.com"))
+	tempHistoryHandler.Info("Url: ", repository.Get("12_URL"))
 
 	if _, error := urlshortener.Sqrt(d); error != nil {
 		tempHistoryHandler.Info("err: ", error)
@@ -64,8 +61,15 @@ func main() {
 
 	csvwork.Readcsv()
 
-	db, _ := storage.ConnectDatabase()
-	h := storage.NewPersonRep(db)
+	db, error := storage.ConnectDatabase()
+	if error != nil {
+		fmt.Println("Error connect")
+	}
+	h := storage.NewPersonRepository(db)
 	h.AddRecord()
-	h.FindAll()
+	sel, error := h.FindAll()
+	if error != nil {
+		fmt.Println(error)
+	}
+	fmt.Println(sel)
 }

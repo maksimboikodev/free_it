@@ -70,7 +70,10 @@ func main() {
 		fmt.Println("Error connect")
 	}
 	h := storage.NewPersonRepository(db)
-	h.AddRecord()
+	_, error := h.AddRecord()
+	if error != nil {
+		fmt.Println(error)
+	}
 	sel, error := h.FindAll()
 	if error != nil {
 		fmt.Println(error)

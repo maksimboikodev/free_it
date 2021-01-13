@@ -24,11 +24,11 @@ func Readcsv() ([]book, error) {
 		title := b[0]
 		price, err := strconv.Atoi(b[1])
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		quantity, err := strconv.Atoi(b[2])
 		if err != nil {
-			panic(err)
+			return nil, err
 		}
 		sr = append(sr, book{title, price, quantity})
 	}

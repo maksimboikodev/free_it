@@ -38,7 +38,7 @@ func ConnectDatabase() (*sql.DB, error) {
 func (repository *PersonRepository) FindAll() ([]User, error) {
 	rows, err := repository.database.Query("SELECT * from users")
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer rows.Close()
 	users := []User{}
@@ -46,7 +46,7 @@ func (repository *PersonRepository) FindAll() ([]User, error) {
 		p := User{}
 		err := rows.Scan(&p.first_name, &p.last_name, &p.age)
 		if err != nil {
-			fmt.Println(err)
+			return nil, err
 			continue
 		}
 		users = append(users, p)
@@ -57,8 +57,5 @@ func (repository *PersonRepository) FindAll() ([]User, error) {
 func (repository *PersonRepository) AddRecord() error {
 	p := User{}
 	_, err := repository.database.Exec("INSERT INTO users VALUES($1, $2, $3)", p.first_name, p.last_name, p.age)
-	if err != nil {
-		panic(err)
-	}
 	return err
 }

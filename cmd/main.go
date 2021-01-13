@@ -65,9 +65,9 @@ func main() {
 	}
 	tempHistoryHandler.Info("result func Readcsv  ", csv)
 
-	db, error := storage.ConnectDatabase()
-	if error != nil {
-		fmt.Println("Error connect")
+	db, err := storage.ConnectDatabase()
+	if err != nil {
+		panic(err)
 	}
 	h := storage.NewPersonRepository(db)
 

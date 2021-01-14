@@ -8,9 +8,9 @@ import (
 )
 
 type User struct {
-	first_name string
-	last_name  string
-	age        int
+	First_name string
+	Last_name  string
+	Age        int
 }
 type PersonRepository struct {
 	database *sql.DB
@@ -44,18 +44,17 @@ func (repository *PersonRepository) FindAll() ([]User, error) {
 	users := []User{}
 	for rows.Next() {
 		p := User{}
-		err := rows.Scan(&p.first_name, &p.last_name, &p.age)
+		err := rows.Scan(&p.First_name, &p.Last_name, &p.Age)
 		if err != nil {
 			return nil, err
-			continue
 		}
 		users = append(users, p)
 	}
 	return users, err
 }
 
-func (repository *PersonRepository) AddRecord() error {
+func (repository *PersonRepository) AddRecord(User) error {
 	p := User{}
-	_, err := repository.database.Exec("INSERT INTO users VALUES($1, $2, $3)", p.first_name, p.last_name, p.age)
+	_, err := repository.database.Exec("INSERT INTO users VALUES($1, $2, $3)", p.First_name, p.Last_name, p.Age)
 	return err
 }

@@ -76,8 +76,8 @@ func main() {
 		fmt.Println(error)
 	}
 	fmt.Println(sel)
-
-	err = h.AddRecord()
+	add := storage.User{"qwe", "rty", 123}
+	err = h.AddRecord(add)
 	if err != nil {
 		fmt.Println(err)
 	}

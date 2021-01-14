@@ -71,14 +71,14 @@ func main() {
 	}
 	h := storage.NewPersonRepository(db)
 
+	p := storage.User{First_name: "CVack", Last_name: "jack", Age: 30}
+	err = h.AddRecord(&p)
+	if err != nil {
+		fmt.Println(err)
+	}
 	sel, error := h.FindAll()
 	if error != nil {
 		fmt.Println(error)
 	}
 	fmt.Println(sel)
-	add := storage.User{"qwe", "rty", 123}
-	err = h.AddRecord(add)
-	if err != nil {
-		fmt.Println(err)
-	}
 }

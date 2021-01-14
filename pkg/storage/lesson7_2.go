@@ -21,7 +21,7 @@ const (
 	port     = 5432
 	user     = "postgres"
 	password = "pass"
-	dbname   = "free"
+	dbname   = "freeit"
 )
 
 func NewPersonRepository(database *sql.DB) *PersonRepository {
@@ -53,8 +53,7 @@ func (repository *PersonRepository) FindAll() ([]User, error) {
 	return users, err
 }
 
-func (repository *PersonRepository) AddRecord(User) error {
-	p := User{}
+func (repository *PersonRepository) AddRecord(p *User) error {
 	_, err := repository.database.Exec("INSERT INTO users VALUES($1, $2, $3)", p.First_name, p.Last_name, p.Age)
 	return err
 }

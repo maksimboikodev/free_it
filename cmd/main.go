@@ -27,17 +27,12 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	var d float64
-	fmt.Print("enter temperature: ")
-	fmt.Scan(&d)
-	fmt.Println(d)
-
 	tempHistoryHandler := &usecases.HistoryHander{
 		Logger:  log,
 		Samples: []usecases.Fahrenheit{},
 	}
 
-	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(d), 2)
+	usecases.CheckAndSave(tempHistoryHandler, usecases.Celsius(55), 2)
 
 	datatypes.List(tempHistoryHandler)
 	datatypes.TurnFIFO(tempHistoryHandler)
@@ -48,7 +43,7 @@ func main() {
 	tempHistoryHandler.Info("Key New:  ", repository.Set("5_Url", "ab.com"))
 	tempHistoryHandler.Info("Url: ", repository.Get("12_URL"))
 
-	if _, error := urlshortener.Sqrt(d); error != nil {
+	if _, error := urlshortener.Sqrt(25); error != nil {
 		tempHistoryHandler.Info("err: ", error)
 	}
 
@@ -61,7 +56,7 @@ func main() {
 
 	csv, err := csvwork.Readcsv()
 	if err != nil {
-		tempHistoryHandler.Info("err: ", err)
+		panic(err)
 	}
 	tempHistoryHandler.Info("result func Readcsv  ", csv)
 
@@ -76,9 +71,9 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	sel, error := h.FindAll()
-	if error != nil {
-		fmt.Println(error)
+	sel, err := h.FindAll()
+	if err != nil {
+		panic(err)
 	}
 	fmt.Println(sel)
 }

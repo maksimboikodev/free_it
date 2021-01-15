@@ -50,7 +50,7 @@ func (repository *PersonRepository) FindAll() ([]User, error) {
 		}
 		users = append(users, p)
 	}
-	return users, err
+	return users, nil
 }
 
 func (repository *PersonRepository) AddRecord(p *User) error {

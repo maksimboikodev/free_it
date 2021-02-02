@@ -75,6 +75,10 @@ func main() {
 	fmt.Println(sel)*/
 	router := mux.NewRouter()
 	router.HandleFunc("/test", gorilla.ProductsHandler)
+	router.HandleFunc("/parse", gorilla.ParseHandler)
+	router.HandleFunc("/csv", gorilla.CsvHandler).Methods("GET")
+	router.HandleFunc("/csvread", gorilla.ReadCsvHandler).Methods("GET")
+	router.HandleFunc("/connectDB", gorilla.DBHandler).Methods("GET")
 	http.Handle("/", router)
 
 	fmt.Println("Server is listening...")

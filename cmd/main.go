@@ -7,7 +7,11 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/kelseyhightower/envconfig"
+	"github.com/maksimboikodev/test/pkg/chanell"
+	"github.com/maksimboikodev/test/pkg/datatypes"
 	"github.com/maksimboikodev/test/pkg/gorilla"
+	"github.com/maksimboikodev/test/pkg/urlshortener"
+	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
 
@@ -24,7 +28,7 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	/*tempHistoryHandler := &usecases.HistoryHander{
+	tempHistoryHandler := &usecases.HistoryHander{
 		Logger:  log,
 		Samples: []usecases.Fahrenheit{},
 	}
@@ -51,28 +55,6 @@ func main() {
 	ch <- mess
 	tempHistoryHandler.Info("push chanell  ", mess)
 
-	csv, err := csvwork.Readcsv()
-	if err != nil {
-		panic(err)
-	}
-	tempHistoryHandler.Info("result func Readcsv  ", csv)
-
-	db, err := storage.ConnectDatabase()
-	if err != nil {
-		panic(err)
-	}
-	h := storage.NewPersonRepository(db)
-
-	p := storage.User{First_name: "CVack", Last_name: "jack", Age: 30}
-	err = h.AddRecord(&p)
-	if err != nil {
-		fmt.Println(err)
-	}
-	sel, err := h.FindAll()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(sel)*/
 	router := mux.NewRouter()
 	router.HandleFunc("/test", gorilla.ProductsHandler)
 	router.HandleFunc("/parse", gorilla.ParseHandler)

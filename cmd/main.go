@@ -60,7 +60,7 @@ func main() {
 	router.HandleFunc("/parse", gorilla.ParseHandler)
 	router.HandleFunc("/csv", gorilla.CsvHandler).Methods("GET")
 	router.HandleFunc("/csvread", gorilla.ReadCsvHandler).Methods("GET")
-	router.HandleFunc("/connectDB", gorilla.DBHandler).Methods("GET")
+	router.HandleFunc("/connectDB", gorilla.DBHandler).Methods("PUT")
 	http.Handle("/", router)
 
 	fmt.Println("Server is listening...")

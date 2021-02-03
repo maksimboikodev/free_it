@@ -16,6 +16,12 @@ func Check(err error) {
 	}
 }
 
+func CheckPanic(err error) {
+	if err != nil {
+		panic(err)
+	}
+}
+
 func ProductsHandler(w http.ResponseWriter, r *http.Request) {
 	response := fmt.Sprintf("TEST")
 	fmt.Fprint(w, response)
@@ -45,9 +51,7 @@ func CsvHandler(writer http.ResponseWriter, request *http.Request) {
 func ReadCsvHandler(writer http.ResponseWriter, request *http.Request) {
 
 	csv, err := csvwork.Readcsv()
-	if err != nil {
-		panic(err)
-	}
+	CheckPanic(err)
 	response := fmt.Sprintf("CSV", csv)
 	fmt.Fprint(writer, response)
 }
@@ -62,13 +66,9 @@ func DBHandler(writer http.ResponseWriter, request *http.Request) {
 
 	p := storage.User{First_name: "Mack", Last_name: "jack", Age: 35}
 	err = h.AddRecord(&p)
-	if err != nil {
-		fmt.Println(err)
-	}
+	Check(err)
 	sel, err := h.FindAll()
-	if err != nil {
-		panic(err)
-	}
+	CheckPanic(err)
 	response := fmt.Sprintf("Print DB ", sel)
 	fmt.Fprint(writer, response)
 }

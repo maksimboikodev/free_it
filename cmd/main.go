@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/kelseyhightower/envconfig"
-	"github.com/maksimboikodev/test/pkg/chanell"
-	"github.com/maksimboikodev/test/pkg/datatypes"
 	"github.com/maksimboikodev/test/pkg/gorilla"
-	"github.com/maksimboikodev/test/pkg/urlshortener"
-	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
 
@@ -28,7 +25,7 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	tempHistoryHandler := &usecases.HistoryHander{
+	/*tempHistoryHandler := &usecases.HistoryHander{
 		Logger:  log,
 		Samples: []usecases.Fahrenheit{},
 	}
@@ -53,7 +50,7 @@ func main() {
 	ch := make(chan string)
 	go chanell.DoSomething(ch, tempHistoryHandler)
 	ch <- mess
-	tempHistoryHandler.Info("push chanell  ", mess)
+	tempHistoryHandler.Info("push chanell  ", mess)*/
 
 	router := mux.NewRouter()
 	router.HandleFunc("/test", gorilla.ProductsHandler)
@@ -64,5 +61,11 @@ func main() {
 	http.Handle("/", router)
 
 	fmt.Println("Server is listening...")
-	http.ListenAndServe(":8080", nil)
+	server := &http.Server{
+		Addr:         "localhost:3000",
+		Handler:      router,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+	server.ListenAndServe()
 }

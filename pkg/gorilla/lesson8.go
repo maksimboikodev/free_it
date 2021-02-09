@@ -1,74 +1,57 @@
 package gorilla
 
 import (
-	"fmt"
+	"encoding/json"
+	"math/rand"
 	"net/http"
-	"os"
-	"text/template"
+	"strconv"
 
-	"github.com/maksimboikodev/test/pkg/csvwork"
-	"github.com/maksimboikodev/test/pkg/storage"
+	"github.com/gorilla/mux"
 )
 
-func Check(err error) {
-	if err != nil {
-		fmt.Println(err)
+type Freeit struct {
+	ID         string `json:"id"`
+	First_name string `json:"First_name"`
+	Last_name  string `json:"Last_name"`
+	Position   string `json:"Position"`
+}
+
+var Students []Freeit
+
+func GetStudents(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(Students)
+}
+
+func GetStudent(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for _, item := range Students {
+		if item.ID == params["id"] {
+			json.NewEncoder(w).Encode(item)
+			return
+		}
 	}
+	json.NewEncoder(w).Encode(&Freeit{})
 }
 
-func CheckPanic(err error) {
-	if err != nil {
-		panic(err)
+func CreateStudent(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	var student Freeit
+	_ = json.NewDecoder(r.Body).Decode(&student)
+	student.ID = strconv.Itoa(rand.Intn(100))
+	Students = append(Students, student)
+	json.NewEncoder(w).Encode(student)
+}
+
+func DeleteStudent(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, item := range Students {
+		if item.ID == params["id"] {
+			Students = append(Students[:index], Students[index+1:]...)
+			break
+		}
 	}
-}
-
-func ProductsHandler(w http.ResponseWriter, r *http.Request) {
-	response := fmt.Sprintf("TEST")
-	fmt.Fprint(w, response)
-}
-
-func ParseHandler(writer http.ResponseWriter, request *http.Request) {
-	html, err := template.ParseFiles("index.html")
-	Check(err)
-	err = html.Execute(writer, nil)
-	Check(err)
-}
-
-func ExecuteTemplate(text string, data interface{}) {
-	tmpl, err := template.New("Parse").Parse(text)
-	Check(err)
-	err = tmpl.Execute(os.Stdout, data)
-	Check(err)
-}
-
-func CsvHandler(writer http.ResponseWriter, request *http.Request) {
-	html, err := template.ParseFiles("products.csv")
-	Check(err)
-	err = html.Execute(writer, nil)
-	Check(err)
-}
-
-func ReadCsvHandler(writer http.ResponseWriter, request *http.Request) {
-
-	csv, err := csvwork.Readcsv()
-	CheckPanic(err)
-	response := fmt.Sprintf("CSV", csv)
-	fmt.Fprint(writer, response)
-}
-
-func DBHandler(writer http.ResponseWriter, request *http.Request) {
-
-	db, err := storage.ConnectDatabase()
-	if err != nil {
-		panic(err)
-	}
-	h := storage.NewPersonRepository(db)
-
-	p := storage.User{First_name: "Mack", Last_name: "jack", Age: 35}
-	err = h.AddRecord(&p)
-	Check(err)
-	sel, err := h.FindAll()
-	CheckPanic(err)
-	response := fmt.Sprintf("Print DB ", sel)
-	fmt.Fprint(writer, response)
+	json.NewEncoder(w).Encode(Students)
 }

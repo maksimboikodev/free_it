@@ -50,14 +50,34 @@ func main() {
 	ch := make(chan string)
 	go chanell.DoSomething(ch, tempHistoryHandler)
 	ch <- mess
-	tempHistoryHandler.Info("push chanell  ", mess)*/
+	tempHistoryHandler.Info("push chanell  ", mess)
+
+	db, err := storage.ConnectDatabase()
+	if err != nil {
+		panic(err)
+	}
+	h := storage.NewPersonRepository(db)
+
+	p := storage.User{First_name: "CVack", Last_name: "jack", Age: 30}
+	err = h.AddRecord(&p)
+	if err != nil {
+		fmt.Println(err)
+	}
+	sel, err := h.FindAll()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(sel)
+	*/
 
 	router := mux.NewRouter()
-	router.HandleFunc("/test", gorilla.ProductsHandler)
-	router.HandleFunc("/parse", gorilla.ParseHandler)
-	router.HandleFunc("/csv", gorilla.CsvHandler).Methods("GET")
-	router.HandleFunc("/csvread", gorilla.ReadCsvHandler).Methods("GET")
-	router.HandleFunc("/connectDB", gorilla.DBHandler).Methods("PUT")
+	gorilla.Students = append(gorilla.Students, gorilla.Freeit{ID: "1", First_name: "Maksim", Last_name: "Boiko", Position: "Student"})
+	gorilla.Students = append(gorilla.Students, gorilla.Freeit{ID: "2", First_name: "Vladimir", Last_name: "Vladimir", Position: "Student"})
+	gorilla.Students = append(gorilla.Students, gorilla.Freeit{ID: "3", First_name: "Ekaterina", Last_name: "Shemerey", Position: "Mentor"})
+	router.HandleFunc("/students", gorilla.GetStudents).Methods("GET")
+	router.HandleFunc("/students/{id}", gorilla.GetStudent).Methods("GET")
+	router.HandleFunc("/students", gorilla.CreateStudent).Methods("POST")
+	router.HandleFunc("/students/{id}", gorilla.DeleteStudent).Methods("DELETE")
 	http.Handle("/", router)
 
 	fmt.Println("Server is listening...")

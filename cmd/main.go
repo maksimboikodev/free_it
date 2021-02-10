@@ -75,9 +75,21 @@ func main() {
 	gorilla.Students = append(gorilla.Students, gorilla.Freeit{ID: "2", First_name: "Vladimir", Last_name: "Vladimir", Position: "Student"})
 	gorilla.Students = append(gorilla.Students, gorilla.Freeit{ID: "3", First_name: "Ekaterina", Last_name: "Shemerey", Position: "Mentor"})
 	router.HandleFunc("/students", gorilla.GetStudents).Methods("GET")
-	router.HandleFunc("/students/{id}", gorilla.GetStudent).Methods("GET")
+	router.HandleFunc("/students/{id}", gorilla.GetStudentV1).Methods("GET").Headers("Version", "v1")
+	router.HandleFunc("/students/{id}", gorilla.GetStudentV2).Methods("GET").Headers("Version", "v2")
 	router.HandleFunc("/students", gorilla.CreateStudent).Methods("POST")
+	/*{ POST Request
+		"First_name": "Alex",
+		"Last_name": "Alex",
+		"Position": "Alex"
+	}*/
 	router.HandleFunc("/students/{id}", gorilla.DeleteStudent).Methods("DELETE")
+	/*{ Delete request
+	    "id":"727887",
+	    "First_name": "Alex",
+	    "Last_name": "Alex",
+	    "Position": "Alex"
+	}*/
 	http.Handle("/", router)
 
 	fmt.Println("Server is listening...")

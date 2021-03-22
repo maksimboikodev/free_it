@@ -56,7 +56,7 @@ func createConnection() *sql.DB {
 }
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 
-	// create an empty user of type models.User
+	// create an empty user of type Freeit
 	var user Freeit
 
 	// decode the json request to user
@@ -100,7 +100,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 func GetAllUser(w http.ResponseWriter, r *http.Request) {
-
+	hed := r.Header.Get("Pass")
+	fmt.Print(hed)
 	// get all the users in the db
 	users, err := getAllUsers()
 

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -31,7 +32,9 @@ type response struct {
 	Message string `json:"message,omitempty"`
 }
 
-func createConnection() *sql.DB {
+var DB *sql.DB
+
+func CreateConnection() *sql.DB {
 	connStr := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
 	db, err := sql.Open("postgres", connStr)
@@ -80,7 +83,8 @@ func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalf("Unable to get all user. %v", err)
 	}
-	json.NewEncoder(w).Encode(users)
+	tmpl, _ := template.ParseFiles("index.html")
+	tmpl.Execute(w, users)
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
@@ -117,11 +121,9 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 func insertUser(user Freeit) int64 {
-	db := createConnection()
-	defer db.Close()
 	sqlStatement := `INSERT INTO users (name, position, age) VALUES ($1, $2, $3) RETURNING userid`
 	var id int64
-	err := db.QueryRow(sqlStatement, user.Name, user.Position, user.Age).Scan(&id)
+	err := DB.QueryRow(sqlStatement, user.Name, user.Position, user.Age).Scan(&id)
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
 	}
@@ -129,11 +131,9 @@ func insertUser(user Freeit) int64 {
 	return id
 }
 func getUser(id int64) (Freeit, error) {
-	db := createConnection()
-	defer db.Close()
 	var user Freeit
 	sqlStatement := `SELECT * FROM users WHERE userid=$1`
-	row := db.QueryRow(sqlStatement, id)
+	row := DB.QueryRow(sqlStatement, id)
 	err := row.Scan(&user.ID, &user.Name, &user.Age, &user.Position)
 	switch err {
 	case sql.ErrNoRows:
@@ -148,11 +148,9 @@ func getUser(id int64) (Freeit, error) {
 	return user, err
 }
 func getAllUsers() ([]Freeit, error) {
-	db := createConnection()
-	defer db.Close()
 	var users []Freeit
 	sqlStatement := `SELECT * FROM users`
-	rows, err := db.Query(sqlStatement)
+	rows, err := DB.Query(sqlStatement)
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
 	}
@@ -170,11 +168,8 @@ func getAllUsers() ([]Freeit, error) {
 }
 
 func updateUser(id int64, user Freeit) int64 {
-	db := createConnection()
-	defer db.Close()
-
 	sqlStatement := `UPDATE users SET name=$2, location=$3, age=$4 WHERE userid=$1`
-	res, err := db.Exec(sqlStatement, id, user.Name, user.Position, user.Age)
+	res, err := DB.Exec(sqlStatement, id, user.Name, user.Position, user.Age)
 
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
@@ -188,10 +183,8 @@ func updateUser(id int64, user Freeit) int64 {
 	return rowsAffected
 }
 func deleteUser(id int64) int64 {
-	db := createConnection()
-	defer db.Close()
 	sqlStatement := `DELETE FROM users WHERE userid=$1`
-	res, err := db.Exec(sqlStatement, id)
+	res, err := DB.Exec(sqlStatement, id)
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
 	}
@@ -207,17 +200,20 @@ func deleteUser(id int64) int64 {
 func Router() *mux.Router {
 
 	router := mux.NewRouter()
-	router.HandleFunc("/api/user/{id}", GetUser).Methods("GET")
-	router.HandleFunc("/api/user", GetAllUser).Methods("GET")
-	router.HandleFunc("/api/newuser", CreateUser).Methods("POST").Headers("Password", "Pass")
-	router.HandleFunc("/api/user/{id}", UpdateUser).Methods("PUT")
-	router.HandleFunc("/api/deleteuser/{id}", DeleteUser).Methods("DELETE")
-	router.HandleFunc("/api/queryline", QueryLine).Methods("GET")
+	//curl -X GET http://localhost:8080/user/7
+	router.HandleFunc("/user/{id}", GetUser).Methods("GET")
+	//curl -X GET http://localhost:8080/user
+	router.HandleFunc("/user", GetAllUser).Methods("GET")
+	router.HandleFunc("/user", CreateUser).Methods("POST").Headers("Password", "Pass")
+	router.HandleFunc("/user/{id}", UpdateUser).Methods("PUT")
+	//curl -X DELETE http://localhost:8080/user/12
+	router.HandleFunc("/user/{id}", DeleteUser).Methods("DELETE")
+	//curl -X GET http://localhost:8080/user/?id=12
+	router.HandleFunc("/user/", QueryLine).Methods("GET")
 
 	return router
 }
 
-//query response http://localhost:8080/api/queryline?id=1
 func QueryLine(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 	user, _ := getUser(int64(id))

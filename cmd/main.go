@@ -23,7 +23,7 @@ func main() {
 	var log = logrus.New()
 	log.Out = file
 
-	/*tempHistoryHandler := &usecases.HistoryHander{
+	tempHistoryHandler := &usecases.HistoryHander{
 		Logger:  log,
 		Samples: []usecases.Fahrenheit{},
 	}
@@ -50,13 +50,13 @@ func main() {
 	ch <- mess
 	tempHistoryHandler.Info("push chanell  ", mess)*/
 
-	/*db, err := storage.ConnectDatabase()
+	db, err := storage.ConnectDatabase()
 	if err != nil {
 		panic(err)
 	}
 	h := storage.NewPersonRepository(db)*/
 
-	/*p := storage.User{First_name: "CVack", Last_name: "jack", Age: 30}
+	p := storage.User{First_name: "CVack", Last_name: "jack", Age: 30}
 	err = h.AddRecord(&p)
 	if err != nil {
 		fmt.Println(err)
@@ -65,10 +65,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(sel)*/
+	fmt.Println(sel)
 
+	gorilla.DB = gorilla.CreateConnection()
 	r := gorilla.Router()
 	fmt.Println("Starting server on the port 8080...")
-
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

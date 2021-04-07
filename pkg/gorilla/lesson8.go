@@ -13,14 +13,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "localhost"
-	port     = 5432
-	user     = "postgres"
-	password = "pass"
-	dbname   = "webapi"
-)
-
 type Freeit struct {
 	ID       int64  `json:"id"`
 	Name     string `json:"name"`
@@ -34,10 +26,8 @@ type response struct {
 
 var DB *sql.DB
 
-func CreateConnection() *sql.DB {
-	connStr := fmt.Sprintf("host=%s port=%d user=%s "+"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	db, err := sql.Open("postgres", connStr)
+func CreateConnection(configDB string) *sql.DB {
+	db, err := sql.Open("postgres", configDB)
 
 	if err != nil {
 		panic(err)

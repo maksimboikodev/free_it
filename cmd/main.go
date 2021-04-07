@@ -6,7 +6,12 @@ import (
 	"os"
 
 	"github.com/kelseyhightower/envconfig"
+	"github.com/maksimboikodev/test/pkg/chanell"
+	"github.com/maksimboikodev/test/pkg/datatypes"
 	"github.com/maksimboikodev/test/pkg/gorilla"
+	"github.com/maksimboikodev/test/pkg/storage"
+	"github.com/maksimboikodev/test/pkg/urlshortener"
+	"github.com/maksimboikodev/test/pkg/usecases"
 	"github.com/sirupsen/logrus"
 )
 
@@ -48,13 +53,13 @@ func main() {
 	ch := make(chan string)
 	go chanell.DoSomething(ch, tempHistoryHandler)
 	ch <- mess
-	tempHistoryHandler.Info("push chanell  ", mess)*/
+	tempHistoryHandler.Info("push chanell  ", mess)
 
 	db, err := storage.ConnectDatabase()
 	if err != nil {
 		panic(err)
 	}
-	h := storage.NewPersonRepository(db)*/
+	h := storage.NewPersonRepository(db)
 
 	p := storage.User{First_name: "CVack", Last_name: "jack", Age: 30}
 	err = h.AddRecord(&p)
@@ -67,7 +72,10 @@ func main() {
 	}
 	fmt.Println(sel)
 
-	gorilla.DB = gorilla.CreateConnection()
+	//database connection parameters
+	configDB := "user=postgres password=pass dbname=webapi sslmode=disable"
+	//connection transfer
+	gorilla.DB = gorilla.CreateConnection(configDB)
 	r := gorilla.Router()
 	fmt.Println("Starting server on the port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", r))

@@ -72,10 +72,8 @@ func main() {
 	}
 	fmt.Println(sel)
 
-	//database connection parameters
-	configDB := "user=postgres password=pass dbname=webapi sslmode=disable"
 	//connection transfer
-	gorilla.DB = gorilla.CreateConnection(configDB)
+	gorilla.DB = gorilla.CreateConnection(gorilla.ConfigDB())
 	r := gorilla.Router()
 	fmt.Println("Starting server on the port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", r))

@@ -5,12 +5,14 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
+	"gopkg.in/yaml.v2"
 )
 
 type Freeit struct {
@@ -26,9 +28,38 @@ type response struct {
 
 var DB *sql.DB
 
-func CreateConnection(configDB string) *sql.DB {
-	db, err := sql.Open("postgres", configDB)
+var config struct {
+	PostgresDB struct {
+		Host     string `yaml:"Host"`
+		Port     int    `yaml:"Port"`
+		User     string `yaml:"User"`
+		Password string `yaml:"Password"`
+		DBname   string `yaml:"DBname"`
+	} `yaml:"PostgresDB"`
+}
 
+func ConfigDB() string {
+	configFile, err := ioutil.ReadFile("config.yaml")
+	if err != nil {
+		log.Fatalln("Failed to load config.yaml.")
+	}
+
+	err = yaml.Unmarshal([]byte(configFile), &config)
+	if err != nil {
+		log.Fatalf("cannot unmarshal config.yaml: %v", err)
+	}
+
+	dbconf := config.PostgresDB
+
+	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		dbconf.Host, dbconf.Port, dbconf.User, dbconf.Password, dbconf.DBname)
+	return psqlInfo
+}
+
+func CreateConnection(psqlInfo string) *sql.DB {
+	psql := psqlInfo
+
+	db, err := sql.Open("postgres", psql)
 	if err != nil {
 		panic(err)
 	}
@@ -40,6 +71,7 @@ func CreateConnection(configDB string) *sql.DB {
 	fmt.Println("Successfully connected!")
 	return db
 }
+
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	hed := r.Header.Get("Password")
 	if hed == "Pass" {
@@ -56,6 +88,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(res)
 	}
 }
+
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
@@ -204,6 +237,7 @@ func Router() *mux.Router {
 	return router
 }
 
+//query response http://localhost:8080/api/queryline?id=1
 func QueryLine(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(r.URL.Query().Get("id"))
 	user, _ := getUser(int64(id))

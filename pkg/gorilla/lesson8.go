@@ -57,9 +57,7 @@ func ConfigDB() string {
 }
 
 func CreateConnection(psqlInfo string) *sql.DB {
-	psql := psqlInfo
-
-	db, err := sql.Open("postgres", psql)
+	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
 	}
@@ -191,7 +189,7 @@ func getAllUsers() ([]Freeit, error) {
 }
 
 func updateUser(id int64, user Freeit) int64 {
-	sqlStatement := `UPDATE users SET name=$2, location=$3, age=$4 WHERE userid=$1`
+	sqlStatement := `UPDATE users SET name=$2, position=$3, age=$4 WHERE userid=$1`
 	res, err := DB.Exec(sqlStatement, id, user.Name, user.Position, user.Age)
 
 	if err != nil {
@@ -227,7 +225,9 @@ func Router() *mux.Router {
 	router.HandleFunc("/user/{id}", GetUser).Methods("GET")
 	//curl -X GET http://localhost:8080/user
 	router.HandleFunc("/user", GetAllUser).Methods("GET")
+	//curl -X POST -H "Content-Type: application/json" -H "Password: Pass" -d "{\"name\":\"AAA\",\"age\":10,\"position\":\"A\"}" http://localhost:8080/user
 	router.HandleFunc("/user", CreateUser).Methods("POST").Headers("Password", "Pass")
+	//curl -X PUT -H "Content-Type: application/json" -d "{\"name\":\"AAA\",\"age\":10,\"position\":\"A\"}" http://localhost:8080/user/17
 	router.HandleFunc("/user/{id}", UpdateUser).Methods("PUT")
 	//curl -X DELETE http://localhost:8080/user/12
 	router.HandleFunc("/user/{id}", DeleteUser).Methods("DELETE")

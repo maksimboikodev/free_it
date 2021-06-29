@@ -1,8 +1,11 @@
 # Ignore logs
 *.log
+
 # Бинарник
 main
+
 #HZ
 .vscode
+
 #config
 config.yaml

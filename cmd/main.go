@@ -73,7 +73,8 @@ func main() {
 	fmt.Println(sel)
 
 	//connection transfer
-	gorilla.DB = gorilla.CreateConnection(gorilla.ConfigDB())
+	os.Setenv("ConfigFileName", "config.yaml")
+	gorilla.DB = gorilla.CreateConnection(gorilla.ConfigDB(os.Getenv("ConfigFileName")))
 	r := gorilla.Router()
 	fmt.Println("Starting server on the port 8080...")
 	log.Fatal(http.ListenAndServe(":8080", r))

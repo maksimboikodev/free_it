@@ -36,17 +36,20 @@ var config struct {
 		Password string `yaml:"Password"`
 		DBname   string `yaml:"DBname"`
 	} `yaml:"PostgresDB"`
+	AccessToken struct {
+		Token string `yaml:"Token"`
+	} `yaml:"Access-token"`
 }
 
-func ConfigDB() string {
-	configFile, err := ioutil.ReadFile("config.yaml")
+func ConfigDB(nameconfig string) string {
+	configFile, err := ioutil.ReadFile(nameconfig)
 	if err != nil {
-		log.Fatalln("Failed to load config.yaml.")
+		log.Fatalln("Failed to load config file")
 	}
 
 	err = yaml.Unmarshal([]byte(configFile), &config)
 	if err != nil {
-		log.Fatalf("cannot unmarshal config.yaml: %v", err)
+		log.Fatalf("cannot unmarshal config file: %v", err)
 	}
 
 	dbconf := config.PostgresDB
@@ -71,8 +74,8 @@ func CreateConnection(psqlInfo string) *sql.DB {
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	hed := r.Header.Get("Password")
-	if hed == "Pass" {
+	hed := r.Header.Get("Access-token")
+	if hed == config.AccessToken.Token {
 		var user Freeit
 		err := json.NewDecoder(r.Body).Decode(&user)
 		if err != nil {
@@ -99,6 +102,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(user)
 }
+
 func GetAllUser(w http.ResponseWriter, r *http.Request) {
 	users, err := getAllUsers()
 	if err != nil {
@@ -119,7 +123,10 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalf("Unable to decode the request body.  %v", err)
 	}
-	updatedRows := updateUser(int64(id), user)
+	updatedRows, err := updateUser(int64(id), user)
+	if err != nil {
+		log.Fatalf("Unable to execute the query. %v", err)
+	}
 	msg := fmt.Sprintf("User updated successfully. Total rows/record affected %v", updatedRows)
 	res := response{
 		ID:      int64(id),
@@ -127,13 +134,17 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(res)
 }
+
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		log.Fatalf("Unable to convert the string into int.  %v", err)
 	}
-	deletedRows := deleteUser(int64(id))
+	deletedRows, err := deleteUser(int64(id))
+	if err != nil {
+		log.Fatalf("Unable to execute the query. %v", err)
+	}
 	msg := fmt.Sprintf("User updated successfully. Total rows/record affected %v", deletedRows)
 	res := response{
 		ID:      int64(id),
@@ -141,6 +152,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(res)
 }
+
 func insertUser(user Freeit) int64 {
 	sqlStatement := `INSERT INTO users (name, position, age) VALUES ($1, $2, $3) RETURNING userid`
 	var id int64
@@ -151,6 +163,7 @@ func insertUser(user Freeit) int64 {
 	fmt.Printf("Inserted a single record %v", id)
 	return id
 }
+
 func getUser(id int64) (Freeit, error) {
 	var user Freeit
 	sqlStatement := `SELECT * FROM users WHERE userid=$1`
@@ -168,6 +181,7 @@ func getUser(id int64) (Freeit, error) {
 
 	return user, err
 }
+
 func getAllUsers() ([]Freeit, error) {
 	var users []Freeit
 	sqlStatement := `SELECT * FROM users`
@@ -188,7 +202,7 @@ func getAllUsers() ([]Freeit, error) {
 	return users, err
 }
 
-func updateUser(id int64, user Freeit) int64 {
+func updateUser(id int64, user Freeit) (int64, error) {
 	sqlStatement := `UPDATE users SET name=$2, position=$3, age=$4 WHERE userid=$1`
 	res, err := DB.Exec(sqlStatement, id, user.Name, user.Position, user.Age)
 
@@ -201,9 +215,10 @@ func updateUser(id int64, user Freeit) int64 {
 		log.Fatalf("Error while checking the affected rows. %v", err)
 	}
 	fmt.Printf("Total rows/record affected %v", rowsAffected)
-	return rowsAffected
+	return rowsAffected, err
 }
-func deleteUser(id int64) int64 {
+
+func deleteUser(id int64) (int64, error) {
 	sqlStatement := `DELETE FROM users WHERE userid=$1`
 	res, err := DB.Exec(sqlStatement, id)
 	if err != nil {
@@ -215,18 +230,17 @@ func deleteUser(id int64) int64 {
 	}
 	fmt.Printf("Total rows/record affected %v", rowsAffected)
 
-	return rowsAffected
+	return rowsAffected, err
 }
 
 func Router() *mux.Router {
-
 	router := mux.NewRouter()
 	//curl -X GET http://localhost:8080/user/7
 	router.HandleFunc("/user/{id}", GetUser).Methods("GET")
 	//curl -X GET http://localhost:8080/user
 	router.HandleFunc("/user", GetAllUser).Methods("GET")
-	//curl -X POST -H "Content-Type: application/json" -H "Password: Pass" -d "{\"name\":\"AAA\",\"age\":10,\"position\":\"A\"}" http://localhost:8080/user
-	router.HandleFunc("/user", CreateUser).Methods("POST").Headers("Password", "Pass")
+	//curl -X POST -H "Content-Type: application/json" -H "Access-token: Pass" -d "{\"name\":\"AAA\",\"age\":10,\"position\":\"A\"}" http://localhost:8080/user
+	router.HandleFunc("/user", CreateUser).Methods("POST").Headers("Access-token", "Pass")
 	//curl -X PUT -H "Content-Type: application/json" -d "{\"name\":\"AAA\",\"age\":10,\"position\":\"A\"}" http://localhost:8080/user/17
 	router.HandleFunc("/user/{id}", UpdateUser).Methods("PUT")
 	//curl -X DELETE http://localhost:8080/user/12

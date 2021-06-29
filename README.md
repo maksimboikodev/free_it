@@ -1,4 +1,4 @@
-# test
+# free_it
 Test project
 This repository contains the result of the laboratory work as part of the Golang course from scratch, organized by the FreeIT initiative.
 The following topics were covered:
